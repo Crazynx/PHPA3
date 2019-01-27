@@ -13,64 +13,67 @@ class Huis {
   protected $_soortDak;
   protected $_energielabel;
 
-  public function __constructor($parStraatnaam, $parHuisnummer, $parPlaats) {
+  public function __construct($parStraatnaam, $parHuisnummer, $parPlaats) {
     $this->_straatnaam = $parStraatnaam;
     $this->_huisnummer = $parHuisnummer;
     $this->_plaats = $parPlaats;
   }
 
-  public function setEigenschappen($eigenschap, $waarde) {
+  public function setAantalKamers($parAantalKamers) {
+    $this->_aantalKamers = $parAantalKamers;
+  }
 
-    switch ($eigenschap) {
-      case 'aantalKamers':
-        $this->_aantalKamers = $waarde;
-        break;
+  public function setAantalToiletten($parAantalToiletten) {
+    $this->_aantalToiletten = $parAantalToiletten;
+  }
 
-      case 'aantalToiletten':
-          $this->_aantalToiletten = $waarde;
-        break;
-
-      case 'verwarming':
-          $this->_verwarming = $waarde;
-        break;
-
-      case 'soortVerwarming':
-          $this->_soortVerwarming = $waarde;
-        break;
-
-      case 'vierkanteMeterGrond':
-          $this->_vierkanteMeterGrond = $waarde;
-        break;
-
-      case 'wozWaarde':
-          $this->_wozWaarde = $waarde;
-        break;
-
-      case 'soortDak':
-          $this->_soortDak = $waarde;
-        break;
-
-      case 'energielabel':
-          $this->_energieLabel = $waarde;
-        break;
-
-      default:
-        return 'Die eigenschap is niet gevonden, dit zijn alle eigenschappen die ingesteld kunnen worden:<br>' .
-        '- straatnaam<br>- huisnummer<br>- plaats<br>- aantalKamers<br>- aantalToiletten<br>- ' .
-        'verwarming<br>- soortVerwarming<br>- vierkanteMeterGrond<br>' .
-        '- wozWaarde<br>- soortDak<br>- energielabel-';
-        break;
-
-      return 'De waarde is ingesteld :)';
+  public function setVerwarming($parVerwarming) {
+    if ($parVerwarming == "True" || $parVerwarming == "False") {
+      $this->_verwarming = $parVerwarming;
+    } else {
+      $this->_verwarming = 'ERROR';
+      echo '<strong>Verwarming kan alleen "True" of "False" zijn.</strong><br>';
     }
   }
 
-  public function getEigenschappen() {
-    return "<ul> <li>$this->_aantalKamers</li> <li>$this->_aantalToiletten</li>" .
-    "<li>$this->_verwarming</li> </ul>";
+  public function setSoortVerwarming($parSoortVerwarming) {
+    if (strtolower($parSoortVerwarming) == "vloerverwarming" || strtolower($parSoortVerwarming) == "cv") {
+      $this->_soortVerwarming = $parSoortVerwarming;
+    } else {
+      $this->_soortVerwarming = 'ERROR';
+      echo '<strong>Soorten verwarmingen zijn "CV" of "Vloerverwarming"</strong><br>';
+    }
   }
 
+  public function setVierkanteMeterGrond($parVierkanteMeterGrond) {
+    $this->_vierkanteMeterGrond = $parVierkanteMeterGrond;
+  }
 
+  public function setWozWaarde($parWozWaarde) {
+    $this->_wozWaarde = $parWozWaarde;
+  }
+
+  public function setSoortDak($parSoortDak) {
+    $this->_soortDak = $parSoortDak;
+  }
+
+  public function setEnergielabel($parEnergielabel) {
+    $this->_energielabel = $parEnergielabel;
+  }
+
+  public function getEigenschappen() {
+    return 'Straatnaam = ' . $this->_straatnaam . '<br>' .
+          'Huisnummer = ' . $this->_huisnummer . '<br>' .
+          'Plaats = ' . $this->_plaats . '<br>' .
+          'Aantal kamers = ' . $this->_aantalKamers . '<br>' .
+          'Aantal toiletten = ' . $this->_aantalToiletten . '<br>' .
+          'Verwarming = ' . $this->_verwarming . '<br>' .
+          'Soort verwarming = ' . $this->_soortVerwarming . '<br>' .
+          'Vierkante meter grond = ' . $this->_vierkanteMeterGrond . '<br>' .
+          'WOZ-waarde = ' . $this->_wozWaarde . '<br>' .
+          'Soort dak = ' . $this->_soortDak . '<br>' .
+          'Energielabel = ' . $this->_energielabel . '<br>';
+  }
 
 }
 

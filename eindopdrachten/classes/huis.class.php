@@ -52,7 +52,7 @@ class Huis {
 
   public function setWozWaarde($parWozWaarde) { //Setter voor de woz waarde
     $this->_wozWaarde = $parWozWaarde;
-    $this->_berekenBelasting();
+    $this->_berekenBelasting(); //Dit is de laatste eigenschap voor het berekenen van de belasting, vandaar dat de functie hier opgeroepen wordt
   }
 
   public function setSoortDak($parSoortDak) { //Setter voor het soort dak

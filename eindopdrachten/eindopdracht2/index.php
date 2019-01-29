@@ -2,15 +2,19 @@
 spl_autoload_register(function ($class) {
     include 'classes/' . $class . '.class.php';
 });
-$kaarten = new Kaarten;
 
-foreach ($kaarten->kaarten as $kaart) { //Check op welke kaart is gedrukt
-  if (isset($_POST[$kaart])) {
-    $kaarten->getKaarten($kaart);
+$memory = new Memory;
+$kaarten = new Kaart;
+
+for ($x = 1; $x <= 16; $x++) {
+
+  if (isset($_POST['kaart' . $x])) {
+    $huidigeKaart = 'kaart' . $x;
   }
-
 }
 
+echo $huidigeKaart;
+$kaarten->getKaarten($huidigeKaart);
 
 
 ?>

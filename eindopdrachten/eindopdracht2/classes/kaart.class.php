@@ -8,8 +8,8 @@ class Kaart extends Memory {
 
       if ($huidigeKaart == $this->kaartenNamen[$x-1]) {
         echo '<input type="submit" value="O" name="kaart' . $x . '"></input>';
-      } else if ($x == 100) {
-
+      } else if ($vorigeKaart == $this->kaartenNamen[$x-1]) {
+        echo '<input type="submit" value="O" name="kaart' . $x . '"></input>';
       } else {
         echo '<input type="submit" value="" name="kaart' . $x . '"></input>';
       }

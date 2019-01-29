@@ -2,6 +2,7 @@
 
 class Kaarten extends Memory {
   public $kaarten = [];
+  private $kaartCounter = 0;
 
   public function __construct() {
     for ($i=1; $i <= 16 ; $i++) {
@@ -10,11 +11,18 @@ class Kaarten extends Memory {
   }
 
   public function getKaarten($kaart) {
+    if ($this->kaartCounter == 2) {
+      $kaartCounter = 0;
+    } else {
+      $this->kaartCounter++;
+    }
+
+
     echo '<form action="index.php" method="post">';
     for ($x = 1; $x <= 16; $x++) {
-
       if (('kaart'.$x) == $kaart) {
         echo '<input type="submit" name="kaart' . $x .'" value="d">';
+        $this->kaartCounter++;
       } else {
         echo '<input type="submit" name="kaart' . $x .'" value="">';
       }

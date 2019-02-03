@@ -22,7 +22,4 @@ if ($_SESSION['clickCounter'] == 2) {
   $huidigeKaart = '';
   $_SESSION['vorigeKaart'] = '';
 }
-
-echo $_SESSION['clickCounter'];
-
 ?>

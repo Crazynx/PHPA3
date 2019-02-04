@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>|--Memory--|</title>
+<link rel="stylesheet" href="style/indexStyle.css">
+</head>
+<body>
 <?php
 session_start();
 spl_autoload_register(function($class_name) { // Laad alle klassen die we nodig hebben
@@ -7,15 +15,15 @@ spl_autoload_register(function($class_name) { // Laad alle klassen die we nodig 
 if (!isset($_SESSION['instance'])) { // Kijkt of er al een instantie gemaakt is
   $memory = new Memory; // Maak een nieuwe instantie van de klasse Memory
   $memory->setKaarten(); // Stel de waarden in die we nodig hebben
-  $_SESSION['kaartWaarden'] = serialize($memory->getKaartWaarden()); // Stop de waarden in een array, zodat
-  $_SESSION['kaartNamen'] = serialize($memory->getKaartNamen()); // ze na een refresh gebruikt kunnen worden
+  $_SESSION['_kaartWaarden'] = serialize($memory->getKaartWaarden()); // Stop de waarden in een array, zodat
+  $_SESSION['_kaartNamen'] = serialize($memory->getKaartNamen()); // ze na een refresh gebruikt kunnen worden
   $_SESSION['instance'] = TRUE; // Zet dit op true, zodat er niet nog een instantie gemaakt wordt
 }
 
-$kaartWaarden = unserialize($_SESSION['kaartWaarden']); // Unserialize, zodat we het kunnen gebruiken in het spel
-$kaartNamen = unserialize($_SESSION['kaartNamen']);
+$_kaartWaarden = unserialize($_SESSION['_kaartWaarden']); // Unserialize, zodat we het kunnen gebruiken in het spel
+$_kaartNamexn = unserialize($_SESSION['_kaartNamen']);
 
-for ($x = 1; $x <= 16; $x++) {
+for ($x = 1; $x <= 16; $x++) { // Controleer welke submit knop er is ingedrukt
   if (isset($_POST['kaart' . $x])) {
     $huidigeKaart = 'kaart' . $x;
     $_SESSION['aantalKerenGeklikt'] += 1;
@@ -24,7 +32,7 @@ for ($x = 1; $x <= 16; $x++) {
 
 echo '<form action="" method="post">';
 
-if ($_SESSION['aantalKerenGeklikt'] == 0) {
+if ($_SESSION['aantalKerenGeklikt'] == 0) { // Als de aantalKerenGeklikt 0 is, worden alle kaarten omgedraaid
   for ($x = 1; $x <= 16; $x++) {
     echo '<input type="submit" value="" name="kaart' . $x . '"</input>';
     if ($x==4 || $x==8 || $x==12) {
@@ -33,10 +41,10 @@ if ($_SESSION['aantalKerenGeklikt'] == 0) {
   }
 } else {
   for ($x = 1; $x <= 16; $x++) {
-    if ($huidigeKaart == 'kaart' . $x) {
-      echo '<input type="submit" value="' . $kaartWaarden[$huidigeKaart] . '" name="kaart' . $x . '"</input>';
+    if ($huidigeKaart == 'kaart' . $x) { // De
+      echo '<input type="submit" value="' . $_kaartWaarden[$huidigeKaart] . '" name="kaart' . $x . '"</input>';
     } else if ($_SESSION['vorigeKaart'] == 'kaart' . $x) {
-      echo '<input type="submit" value="' . $kaartWaarden[$_SESSION['vorigeKaart']] . '" name="kaart' . $x . '"</input>';
+      echo '<input type="submit" value="' . $_kaartWaarden[$_SESSION['vorigeKaart']] . '" name="kaart' . $x . '"</input>';
     } else {
       echo '<input type="submit" value="" name="kaart' . $x . '"</input>';
     }
@@ -48,11 +56,11 @@ if ($_SESSION['aantalKerenGeklikt'] == 0) {
 
 echo '</form>';
 
-if ($kaartWaarden[$huidigeKaart] == $kaartWaarden[$_SESSION['vorigeKaart']]) {
+if ($_kaartWaarden[$huidigeKaart] == $_kaartWaarden[$_SESSION['vorigeKaart']]) { // Kijk of de kaarten overeen komen
   echo 'De twee kaarten komen overeen!!!';
 }
 
-$_SESSION['vorigeKaart'] = $huidigeKaart;
-
-
+$_SESSION['vorigeKaart'] = $huidigeKaart; // Nadat alle taken zijn gedaan kan de vorigekaart de waarde krijgen van de huidigekaart
 ?>
+</body>
+</html>

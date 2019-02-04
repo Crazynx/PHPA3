@@ -26,6 +26,12 @@ class Memory {
     return $this->_kaartenNamen;
   }
 
+  public function checkForMatch($huidigeKaart, $vorigeKaart) {
+    if ($huidigeKaart == $vorigeKaart) {
+      return 'De twee kaarten komen overeen!';
+    }
+  }
+
 }
 
 ?>

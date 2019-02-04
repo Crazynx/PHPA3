@@ -6,17 +6,30 @@
 <link rel="stylesheet" href="style/indexStyle.css">
 </head>
 <body>
+
+  <form action="" method="post">
+    <input type="submit" name="resetSession"></input>
+  </form>
 <?php
 session_start();
+
+if (isset($_POST['resetSession'])) {
+  session_destroy();
+}
+
 spl_autoload_register(function($class_name) { // Laad alle klassen die we nodig hebben
   include 'classes/' . $class_name . '.class.php';
 });
 
-if (!isset($_SESSION['instance'])) { // Kijkt of er al een instantie gemaakt is
-  $memory = new Memory; // Maak een nieuwe instantie van de klasse Memory
+$memory = new Memory; // Maak een nieuwe instantie van de klasse Memory
+
+if (!isset($_SESSION['instance'])) { // Kijkt of er al een instantie gemaakt is en voert eenmalig dingen uit
   $memory->setKaarten(); // Stel de waarden in die we nodig hebben
   $_SESSION['_kaartWaarden'] = serialize($memory->getKaartWaarden()); // Stop de waarden in een array, zodat
   $_SESSION['_kaartNamen'] = serialize($memory->getKaartNamen()); // ze na een refresh gebruikt kunnen worden
+  $_SESSION['aantalKerenGeklikt'] = 0;
+  $_SESSION['vorigeKaart'] = 'kaart3';
+  $huidigeKaart = 'kaart1';
   $_SESSION['instance'] = TRUE; // Zet dit op true, zodat er niet nog een instantie gemaakt wordt
 }
 
@@ -31,7 +44,6 @@ for ($x = 1; $x <= 16; $x++) { // Controleer welke submit knop er is ingedrukt
 }
 
 echo '<form action="" method="post">';
-
 if ($_SESSION['aantalKerenGeklikt'] == 0) { // Als de aantalKerenGeklikt 0 is, worden alle kaarten omgedraaid
   for ($x = 1; $x <= 16; $x++) {
     echo '<input type="submit" value="" name="kaart' . $x . '"</input>';
@@ -53,12 +65,9 @@ if ($_SESSION['aantalKerenGeklikt'] == 0) { // Als de aantalKerenGeklikt 0 is, w
     }
   }
 }
-
 echo '</form>';
 
-if ($_kaartWaarden[$huidigeKaart] == $_kaartWaarden[$_SESSION['vorigeKaart']]) { // Kijk of de kaarten overeen komen
-  echo 'De twee kaarten komen overeen!!!';
-}
+echo $memory->checkForMatch($_kaartWaarden[$huidigeKaart], $_kaartWaarden[$_SESSION['vorigeKaart']]); // Kijk voor een overeenkomst tussen kaarten
 
 $_SESSION['vorigeKaart'] = $huidigeKaart; // Nadat alle taken zijn gedaan kan de vorigekaart de waarde krijgen van de huidigekaart
 ?>

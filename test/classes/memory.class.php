@@ -28,7 +28,7 @@ class Memory {
 
   public function checkForMatch($huidigeKaart, $vorigeKaart) {
     if ($huidigeKaart == $vorigeKaart) {
-      return 'De twee kaarten komen overeen!';
+      return true;
     }
   }
 

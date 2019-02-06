@@ -6,8 +6,8 @@ class Kaart {
   public $_kaartNamen;
 
   public function __construct() {
-    $this->initialiseerKaartNamen();
-    $this->initialiseerKaartWaarden();
+    $this->_initialiseerKaartNamen();
+    $this->_initialiseerKaartWaarden();
   }
 
   public function resetKaarten() {
@@ -24,6 +24,7 @@ class Kaart {
   public function updateKaarten($huidigeKaart, $vorigeKaart, $klikCounter) {
     if ($klikCounter == 3) {
       $this->resetKaarten();
+      $_SESSION['klikCounter'] = 0; // Reset de klik counter
     } else {
       echo '<form action="" method="post">';
         for ($x = 0; $x < 16; $x++) {
@@ -36,17 +37,17 @@ class Kaart {
     }
   }
 
-  public function initialiseerKaartNamen() {
+  private function _initialiseerKaartNamen() {
     for ($x = 0; $x < 16; $x++) {
       $this->_kaartNamen[$x] = 'kaart'.($x+1);
     }
   }
 
-  public function initialiseerKaartWaarden() {
+  private function _initialiseerKaartWaarden() {
     for ($x = 0; $x < 16; $x++) {
-      $this->randNum = rand(1,100);
-      $this->_kaartWaarden[$this->_kaartNamen[$x]] = $this->randNum;
-      $this->_kaartWaarden[$this->_kaartNamen[++$x]] = $this->randNum;
+      $randNum = rand(1,100);
+      $this->_kaartWaarden[$this->_kaartNamen[$x]] = $randNum;
+      $this->_kaartWaarden[$this->_kaartNamen[++$x]] = $randNum;
     }
   }
 

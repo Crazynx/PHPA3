@@ -2,18 +2,31 @@
 
 class Kaart {
 
-  public $_kaartWaarden;
-  public $_kaartNamen;
+  private $_kaartWaarden;
+  private $_kaartNamen;
+  private $_gematchteKaarten;
 
   public function __construct() {
     $this->_initialiseerKaartNamen();
     $this->_initialiseerKaartWaarden();
   }
 
+  public function checkForMatch($huidigeKaart, $vorigeKaart) {
+    if ($this->_kaartWaarden[$huidigeKaart] == $this->_kaartWaarden[$vorigeKaart] && $huidigeKaart != $vorigeKaart) {
+      $_SESSION['gematchteKaarten'][$huidigeKaart] = $huidigeKaart;
+      $_SESSION['gematchteKaarten'][$vorigeKaart] = $vorigeKaart;
+      return true;
+    }
+  }
+
   public function resetKaarten() {
     echo '<form action="" method="post">';
       for ($x = 1; $x <= 16; $x++) {
-        echo '<input type="submit" name="'.$this->_kaartNamen[$x-1].'" value=""></input>';
+        if (isset($_SESSION['gematchteKaarten']['kaart'.$x])) {
+          echo '<input type="submit" name="'.$this->_kaartNamen[$x-1].'" value="'.$this->_kaartWaarden[$this->_kaartNamen[$x-1]].'"></input>';
+        } else {
+          echo '<input type="submit" name="'.$this->_kaartNamen[$x-1].'" value=""></input>';
+        }
         if ($x==4||$x==8||$x==12) {
           echo '<br>';
         }

@@ -4,19 +4,20 @@ spl_autoload_register(function($class_name) {
   require 'classes/'.$class_name.'.class.php';
 });
 
-// unset($_SESSION['instance']);
+// unset($_SESSION['klikCounter']);
 
-if (!isset($_SESSION['instance'])) {
+if (!isset($_SESSION['instance'])) { // Eenmalig een object maken en andere dingen die maar één keer moeten gebeuren
   $kaart = new Kaart;
   $_SESSION['kaart'] = serialize($kaart);
   $_SESSION['instance'] = true;
 }
 
-$kaart = unserialize($_SESSION['kaart']);
-$kaart->updateKaarten('kaart1', 'kaart2', 2);
+$form = new Form;
+$huidigeKaart = $form->getPressedCard();
+$_SESSION['klikCounter']++;
 
-print_r($kaart->_kaartWaarden);
-echo '<br>';
-print_r($kaart->_kaartNamen);
+$kaart = unserialize($_SESSION['kaart']); // Het object terugzetten naar een variabele
+$kaart->updateKaarten($huidigeKaart, $_SESSION['vorigeKaart'], $_SESSION['klikCounter']);
+$_SESSION['vorigeKaart'] = $huidigeKaart; // Stel de vorige geselecteerde kaart in
 
 ?>

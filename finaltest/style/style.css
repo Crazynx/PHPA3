@@ -1,0 +1,14 @@
+body {
+  background-color: lightgreen;
+}
+
+input[type=submit] {
+  font-weight: bolder;
+  font-size: 20px;
+  height: 150px;
+  width: 100px;
+  background-color: lightgrey;
+  border-color: grey;
+  border-radius: 10px;
+  overflow: hidden;
+}

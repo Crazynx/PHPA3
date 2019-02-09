@@ -13,11 +13,12 @@ if (!isset($_SESSION['instance'])) { // Eenmalig een object maken en andere ding
   $kaart->toonAlleKaarten();
   $_SESSION['kaart'] = serialize($kaart);
   $_SESSION['instance'] = true;
+  $_SESSION['vorigeKaart'] = 'kaart1'; // Vermijd undefined index
+  $_SESSION['klikCounter'] = 0;
 } else { // Als er al een object gemaakt is dan gebeurt dit
   $form = new Form;
   $huidigeKaart = $form->getPressedCard();
   $_SESSION['klikCounter']++;
-
   $kaart = unserialize($_SESSION['kaart']); // Het object terugzetten naar een variabele
   $kaart->checkForMatch($huidigeKaart, $_SESSION['vorigeKaart']);
   $kaart->updateKaarten($huidigeKaart, $_SESSION['vorigeKaart'], $_SESSION['klikCounter']);

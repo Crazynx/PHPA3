@@ -13,6 +13,7 @@ if (!isset($_SESSION['instance'])) { // Eenmalig een object maken en andere ding
   $kaart->toonAlleKaarten();
   $_SESSION['kaart'] = serialize($kaart);
   $_SESSION['instance'] = true;
+  $huidigeKaart = 'kaart1'; // Vermijd undefined index
   $_SESSION['vorigeKaart'] = 'kaart1'; // Vermijd undefined index
   $_SESSION['klikCounter'] = 0;
 } else { // Als er al een object gemaakt is dan gebeurt dit

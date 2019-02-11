@@ -32,10 +32,14 @@ class Kaart {
     echo '</form>';
   }
 
-  public function resetKaarten() { // Draai alle kaarten om
+  public function resetKaarten($huidigeKaart) { // Draai alle kaarten om
+    echo 'Reset opgeroepen';
+    $_SESSION['vorigeKaart'] = '';
     echo '<form action="" method="post">';
       for ($x = 1; $x <= 16; $x++) {
-        if (isset($_SESSION['gematchteKaarten']['kaart'.$x])) { // Kijkt of de waarde in de gematchteKaarten array staat, zodat die kaart "omgedraaid" is
+        if ($huidigeKaart == 'kaart'.$x) {
+          echo '<input type="submit" name="'.$this->_kaartNamen[$x-1].'" value="'.$this->_kaartWaarden[$huidigeKaart].'"></input>';
+        } else if (isset($_SESSION['gematchteKaarten']['kaart'.$x])) { // Kijkt of de waarde in de gematchteKaarten array staat, zodat die kaart "omgedraaid" is
           echo '<input type="submit" name="'.$this->_kaartNamen[$x-1].'" value="'.$this->_kaartWaarden[$this->_kaartNamen[$x-1]].'"></input>';
         } else { // Anders wordt er een "kale" kaart getoont
           echo '<input type="submit" name="'.$this->_kaartNamen[$x-1].'" value=""></input>';
@@ -47,21 +51,27 @@ class Kaart {
     echo '</form>';
   }
 
-  public function updateKaarten($huidigeKaart, $vorigeKaart) {
-    echo '<form action="" method="post">';
-      for ($x = 0; $x < 16; $x++) {
-        if ($huidigeKaart == 'kaart'.($x+1) || $vorigeKaart == 'kaart'.($x+1)) {
-          echo '<input type="submit" name="'.$this->_kaartNamen[$x].'" value="'.$this->_kaartWaarden['kaart'.($x+1)].'"></input>';
-        } else if (isset($_SESSION['gematchteKaarten']['kaart'.($x+1)])) { // Kijkt of de waarde in de gematchteKaarten array staat, zodat die kaart "omgedraaid" is
-          echo '<input type="submit" name="'.$this->_kaartNamen[$x].'" value="'.$this->_kaartWaarden['kaart'.($x+1)].'"></input>';
-        } else { // Anders wordt er een "kale" kaart getoont
-          echo '<input type="submit" name="'.$this->_kaartNamen[$x].'" value=""></input>';
+  public function updateKaarten($huidigeKaart, $vorigeKaart, $klikCounter) {
+    if ($klikCounter == 1) {
+      $this->resetKaarten($huidigeKaart);
+      $_SESSION['klikCounter'] = 0; // Reset de klik counter
+    } else {
+      $_SESSION['klikCounter']++;
+      echo '<form action="" method="post">';
+        for ($x = 0; $x < 16; $x++) {
+          if ($huidigeKaart == 'kaart'.($x+1) || $vorigeKaart == 'kaart'.($x+1)) {
+            echo '<input type="submit" name="'.$this->_kaartNamen[$x].'" value="'.$this->_kaartWaarden['kaart'.($x+1)].'"></input>';
+          } else if (isset($_SESSION['gematchteKaarten']['kaart'.($x+1)])) { // Kijkt of de waarde in de gematchteKaarten array staat, zodat die kaart "omgedraaid" is
+            echo '<input type="submit" name="'.$this->_kaartNamen[$x].'" value="'.$this->_kaartWaarden['kaart'.($x+1)].'"></input>';
+          } else { // Anders wordt er een "kale" kaart getoont
+            echo '<input type="submit" name="'.$this->_kaartNamen[$x].'" value=""></input>';
+          }
+          if ($x==3||$x==7||$x==11) { // Zorgt voor de linebreaks
+            echo '<br>';
+          }
         }
-        if ($x==3||$x==7||$x==11) { // Zorgt voor de linebreaks
-          echo '<br>';
-        }
-      }
-    echo '<form>';
+      echo '<form>';
+    }
   }
 
   private function _initialiseerKaartNamen() { // Stelt de naam array in

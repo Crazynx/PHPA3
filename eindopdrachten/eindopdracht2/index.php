@@ -1,29 +1,3 @@
-<?php
-session_start(); // Begin de sessie
-spl_autoload_register(function($class_name) { // Laad alle nodige klassen
-  require 'classes/'.$class_name.'.class.php';
-});
-
-if (isset($_POST['resetSession'])) { // Herstart het spel
-  session_destroy();
-}
-
-if (!isset($_SESSION['instance'])) { // Eenmalig een object maken en andere dingen doen die maar één keer moeten gebeuren
-  $kaart = new Kaart;
-  $kaart->toonAlleKaarten();
-  $_SESSION['kaart'] = serialize($kaart);
-  $_SESSION['instance'] = true;
-  $huidigeKaart = ''; // Vermijd undefined index
-  $_SESSION['vorigeKaart'] = ''; // Vermijd undefined index
-} else { // Als er al een object gemaakt is dan gebeurt dit
-  $kaart = unserialize($_SESSION['kaart']); // Het object terugzetten naar een variabele
-  $form = new Form;
-  $huidigeKaart = $form->getPressedCard();
-  $kaart->checkForMatch($huidigeKaart, $_SESSION['vorigeKaart']);
-  $kaart->updateKaarten($huidigeKaart, $_SESSION['vorigeKaart']);
-  $_SESSION['vorigeKaart'] = $huidigeKaart; // Stel de vorige geselecteerde kaart in
-}
-?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -32,6 +6,36 @@ if (!isset($_SESSION['instance'])) { // Eenmalig een object maken en andere ding
 <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
+  <?php
+  session_start(); // Begin de sessie
+  spl_autoload_register(function($class_name) { // Laad alle nodige klassen
+    require 'classes/'.$class_name.'.class.php';
+  });
+
+  if (isset($_POST['resetSession'])) { // Herstart het spel
+    session_destroy();
+  }
+
+  if (!isset($_SESSION['instance'])) { // Eenmalig een object maken en andere dingen doen die maar één keer moeten gebeuren
+    $kaart = new Kaart;
+    $kaart->toonAlleKaarten();
+    $_SESSION['kaart'] = serialize($kaart);
+    $_SESSION['instance'] = true;
+    $_SESSION['vorigeKaart'] = ''; // Vermijd undefined index
+    $_SESSION['klikCounter'] = 0;
+  } else { // Als er al een object gemaakt is dan gebeurt dit
+    $kaart = unserialize($_SESSION['kaart']); // Het object terugzetten naar een variabele
+    $form = new Form;
+    $huidigeKaart = $form->getPressedCard();
+    if ($kaart->checkForMatch($huidigeKaart, $_SESSION['vorigeKaart'])) {
+      $huidigeKaart = '';
+      $_SESSION['vorigeKaart'];
+    }
+    $kaart->updateKaarten($huidigeKaart, $_SESSION['vorigeKaart'], $_SESSION['klikCounter']);
+    $_SESSION['vorigeKaart'] = $huidigeKaart; // Stel de vorige geselecteerde kaart in
+  }
+  ?>
+  <br>
   <form class="destroySession" action="" method="post">
     <input type="submit" name="resetSession" value="Opnieuw"></input>
   </form>

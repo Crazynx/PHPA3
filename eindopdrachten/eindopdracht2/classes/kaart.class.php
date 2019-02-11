@@ -12,7 +12,7 @@ class Kaart {
   }
 
   public function checkForMatch($huidigeKaart, $vorigeKaart) {
-    if (isset($huidigeKaart) && isset($vorigeKaart)) {
+    if (isset($huidigeKaart) && !empty($huidigeKaart) && isset($vorigeKaart) && !empty($vorigeKaart)) {
       if ($this->_kaartWaarden[$huidigeKaart] == $this->_kaartWaarden[$vorigeKaart] && $huidigeKaart != $vorigeKaart) { // Een kaart kan niet met dezelfde kaart overeen komen
         $_SESSION['gematchteKaarten'][$huidigeKaart] = $huidigeKaart; // Voeg de kaart toe aan de gematchteKaarten array
         $_SESSION['gematchteKaarten'][$vorigeKaart] = $vorigeKaart; // Voeg de kaart toe aan de gematchteKaarten array
@@ -33,7 +33,6 @@ class Kaart {
   }
 
   public function resetKaarten($huidigeKaart) { // Draai alle kaarten om
-    echo 'Reset opgeroepen';
     $_SESSION['vorigeKaart'] = '';
     echo '<form action="" method="post">';
       for ($x = 1; $x <= 16; $x++) {

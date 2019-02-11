@@ -13,10 +13,12 @@ class Kaart {
 
   public function checkForMatch($huidigeKaart, $vorigeKaart) {
     if (isset($huidigeKaart) && !empty($huidigeKaart) && isset($vorigeKaart) && !empty($vorigeKaart)) {
-      if ($this->_kaartWaarden[$huidigeKaart] == $this->_kaartWaarden[$vorigeKaart] && $huidigeKaart != $vorigeKaart) { // Een kaart kan niet met dezelfde kaart overeen komen
-        $_SESSION['gematchteKaarten'][$huidigeKaart] = $huidigeKaart; // Voeg de kaart toe aan de gematchteKaarten array
-        $_SESSION['gematchteKaarten'][$vorigeKaart] = $vorigeKaart; // Voeg de kaart toe aan de gematchteKaarten array
-        return true; // True, want er is een match gevonden
+      if (!isset($_SESSION['gematchteKaarten'][$huidigeKaart]) || !isset($_SESSION['gematchteKaarten'][$huidigeKaart])) { // Geen match met een al gematchte kaart
+        if ($this->_kaartWaarden[$huidigeKaart] == $this->_kaartWaarden[$vorigeKaart] && $huidigeKaart != $vorigeKaart) { // Een kaart kan niet met dezelfde kaart overeen komen
+          $_SESSION['gematchteKaarten'][$huidigeKaart] = $huidigeKaart; // Voeg de kaart toe aan de gematchteKaarten array
+          $_SESSION['gematchteKaarten'][$vorigeKaart] = $vorigeKaart; // Voeg de kaart toe aan de gematchteKaarten array
+          return true; // True, want er is een match gevonden
+        }
       }
     }
   }
